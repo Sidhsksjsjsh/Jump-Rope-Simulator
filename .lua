@@ -18,7 +18,8 @@ local var = {
     s = "BasicGymEgg",
     table = {},
     toggle = false
-  }
+  },
+  reb = false
 }
 
 lib:AddTable(game:GetService("ReplicatedStorage")["Components"]["Eggs"],var.eggs.table)
@@ -85,6 +86,14 @@ T1:Button("Redeem all codes",function()
     end
 end)
 
+T1:Toggle("Auto rebirth",false,function(value)
+    var.reb = value
+    while wait() do
+      if var.reb == false then break end
+      game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["FightService"]["RF"]["Rebirth"]:InvokeServer()
+    end
+end)
+
 T2:Dropdown("Choose egg",var.eggs.table,function(value)
     var.eggs.s = value
 end)
@@ -93,7 +102,7 @@ T2:Toggle("Auto hatch",false,function(value)
     var.eggs.toggle = value
     while wait() do
       if var.eggs.toggle == false then break end
-      game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["DataService"]["RF"]["EggAction"]:InvokeServer("1xHatch",var.eggs.table)
+      game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["DataService"]["RF"]["EggAction"]:InvokeServer("1xHatch",var.eggs.s)
       game:GetService("ReplicatedStorage")["Packages"]["Knit"]["Services"]["DataService"]["RF"]["FinishHatch"]:InvokeServer()
     end
 end)
